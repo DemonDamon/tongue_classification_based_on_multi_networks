@@ -21,7 +21,7 @@ data['format'] = train['filename']
 
 # as the images are in train_images folder, add train_images before the image name
 for i in range(data.shape[0]):
-    data['format'][i] = 'train/' + data['format'][i]
+    data['format'][i] = '/root/damon_files/data/holistic_tongue_data/train/' + data['format'][i]
 
 # add xmin, ymin, xmax, ymax and class as per the format required
 for i in range(data.shape[0]):
