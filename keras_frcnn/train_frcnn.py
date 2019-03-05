@@ -43,10 +43,10 @@ if not options.train_path:   # if filename is not given
 
 if options.parser == 'pascal_voc':
 	from keras_frcnn.pascal_voc_parser import get_data
-elif options.parser == 'simple':
+elif options.parser == 'self-defined':
 	from keras_frcnn.self_defined_parser import get_data
 else:
-	raise ValueError("Command line option parser must be one of 'pascal_voc' or 'simple'")
+	raise ValueError("Command line option parser must be one of 'pascal_voc' or 'self-defined'")
 
 # pass the settings from the command line, and persist them in the config object
 C = config.Config()

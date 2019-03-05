@@ -84,7 +84,7 @@ parser.add_option("-n", "--num_rois", dest="num_rois",
 parser.add_option("--config_filename", dest="config_filename", help=
 				"Location to read the metadata related to the training (generated when training).",
 				default="config.pickle")
-parser.add_option("-o", "--parser", dest="parser", help="Parser to use. One of simple or pascal_voc",
+parser.add_option("-o", "--parser", dest="parser", help="Parser to use. One of self-defined or pascal_voc",
 				default="pascal_voc"),
 
 (options, args) = parser.parse_args()
@@ -95,10 +95,10 @@ if not options.test_path:   # if filename is not given
 
 if options.parser == 'pascal_voc':
 	from keras_frcnn.pascal_voc_parser import get_data
-elif options.parser == 'simple':
+elif options.parser == 'self-defined':
 	from keras_frcnn.self_defined_parser import get_data
 else:
-	raise ValueError("Command line option parser must be one of 'pascal_voc' or 'simple'")
+	raise ValueError("Command line option parser must be one of 'pascal_voc' or 'self-defined'")
 
 config_output_filename = options.config_filename
 
