@@ -1,0 +1,26 @@
+<annotation>
+	<folder>train</folder>
+	<filename>WX00853.jpg</filename>
+	<path>D:\tonge_recognization_project\data\train\WX00853.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>2448</width>
+		<height>3264</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>tongue</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>842</xmin>
+			<ymin>628</ymin>
+			<xmax>1818</xmax>
+			<ymax>2114</ymax>
+		</bndbox>
+	</object>
+</annotation>
