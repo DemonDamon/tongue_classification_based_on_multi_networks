@@ -9,8 +9,6 @@ def get_data(input_path):
 
 	class_mapping = {}
 
-	visualise = True
-	
 	with open(input_path,'r') as f:
 
 		print('Parsing annotation files')

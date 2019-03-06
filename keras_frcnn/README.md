@@ -1,9 +1,10 @@
 # keras-frcnn
-Keras implementation of Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks.
-cloned from https://github.com/yhenon/keras-frcnn/
+Keras implementation of Faster R-CNN on Tongue Detection: Towards Real-Time Object Detection with Region Proposal Networks.
+cloned from https://github.com/kbardool/keras-frcnn which using VGG-16 or ResNet-50 as backbone. Here I am trying to use 
+deeper network like VGG-19 and ResNet-101 as backbone instead.
 
 USAGE:
-- Both theano and tensorflow backends are supported. However compile times are very high in theano, and tensorflow is highly recommended.
+- Use tensorflow as backend is highly recommended, even though Theano works as well.
 - `train_frcnn.py` can be used to train a model. To train on Pascal VOC data, simply do:
 `python train_frcnn.py -p /path/to/pascalvoc/`. 
 - the Pascal VOC data set (images and annotations for bounding boxes around the classified objects) can be obtained from: http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar

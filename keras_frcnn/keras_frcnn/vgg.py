@@ -18,13 +18,26 @@ from keras.utils.data_utils import get_file
 from keras import backend as K
 from keras_frcnn.RoiPoolingConv import RoiPoolingConv
 
-
-def get_weight_path():
-    if K.image_dim_ordering() == 'th':
-        print('pretrained weights not available for VGG with theano backend')
-        return
+def download_imagenet_weight_file(is_include_top):
+    if not is_include_top:
+        TF_WEIGHTS_PATH_NO_TOP = 'https://github.com/fchollet/deep-learning-models/releases/download/v0.2/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5'
+        # cache_subdir: set up the name of fold stored downloads
+        # cache_dir: set up the directory of storing downloads
+        weights_path = get_file('resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5', TF_WEIGHTS_PATH_NO_TOP, \
+                                cache_subdir='pretrained_model_weights', \
+                                md5_hash='a268eb855778b3df3c7506639542a6af', \
+                                cache_dir='./')
+        print("Finish download, and save no-top model weight in ./pretrained_model_weights")
     else:
-        return 'vgg16_weights_tf_dim_ordering_tf_kernels.h5'
+        TF_WEIGHTS_PATH_WITH_TOP = 'https://github.com/fchollet/deep-learning-models/releases/download/v0.2/resnet50_weights_tf_dim_ordering_tf_kernels.h5'
+        # cache_subdir: set up the name of fold stored downloads
+        # cache_dir: set up the directory of storing downloads
+        weights_path = get_file('resnet50_weights_tf_dim_ordering_tf_kernels.h5', TF_WEIGHTS_PATH_WITH_TOP, \
+                                cache_subdir='pretrained_model_weights', \
+                                md5_hash='a268eb855778b3df3c7506639542a6af', \
+                                cache_dir='./')
+        print("Finish download, and save with-top model weight in ./pretrained_model_weights")
+    return weights_path
 
 
 def get_img_output_length(width, height):
