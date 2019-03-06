@@ -1,5 +1,11 @@
 from __future__ import division
-import os, sys, random, time, pprint, pickle
+
+from random import shuffle, choice
+from time import time
+from pprint import pprint
+from sys import setrecursionlimit
+from os import path
+from pickle import dump
 import numpy as np
 from optparse import OptionParser
 
@@ -12,7 +18,7 @@ from keras_frcnn import losses as losses
 import keras_frcnn.roi_helpers as roi_helpers
 from keras.utils import generic_utils
 
-sys.setrecursionlimit(40000)
+setrecursionlimit(40000)
 
 parser = OptionParser()
 
@@ -67,16 +73,16 @@ if options.utilize_transfer_learning and not options.input_pretrained_weight_pat
 	# define to utilize transfer learning but if not specify "input_pretrained_weight_path" parameter,
 	# then default to download models from https://github.com/fchollet/deep-learning-models/releases/download/v0.2/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5
 	# to ./pretrained_model_weights folder.
-	if not os.path.exists('./pretrained_model_weights'):
+	if not path.exists('./pretrained_model_weights'):
 		C.base_net_weights = nn.download_imagenet_weight_file(options.including_top_weight)
 	else:
 		if not options.including_top_weight:
-			if os.path.exists('./pretrained_model_weights/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5'):
+			if path.exists('./pretrained_model_weights/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5'):
 				C.base_net_weights = './pretrained_model_weights/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5'
 			else:
 				C.base_net_weights = nn.download_imagenet_weight_file(options.including_top_weight)
 		else:
-			if os.path.exists('./pretrained_model_weights/resnet50_weights_tf_dim_ordering_tf_kernels.h5'):
+			if path.exists('./pretrained_model_weights/resnet50_weights_tf_dim_ordering_tf_kernels.h5'):
 				C.base_net_weights = './pretrained_model_weights/resnet50_weights_tf_dim_ordering_tf_kernels.h5'
 			else:
 				C.base_net_weights = nn.download_imagenet_weight_file(options.including_top_weight)
@@ -100,16 +106,16 @@ C.class_mapping = class_mapping
 inv_map = {v: k for k, v in class_mapping.items()}
 
 print('Training images per class:')
-pprint.pprint(classes_count)
+pprint(classes_count)
 print('Num classes (including bg) = {}'.format(len(classes_count)))
 
 config_output_filename = options.config_filename
 
 with open(config_output_filename, 'wb') as config_f:
-	pickle.dump(C,config_f)
+	dump(C,config_f)
 	print('Config has been written to {}, and can be loaded when testing to ensure correct results'.format(config_output_filename))
 
-random.shuffle(all_imgs)
+shuffle(all_imgs)
 
 num_imgs = len(all_imgs)
 
@@ -167,7 +173,7 @@ iter_num = 0
 losses = np.zeros((epoch_length, 5))
 rpn_accuracy_rpn_monitor = []
 rpn_accuracy_for_epoch = []
-start_time = time.time()
+start_time = time()
 
 best_loss = np.Inf
 
@@ -238,9 +244,9 @@ for epoch_num in range(num_epochs):
 				selected_pos_samples = pos_samples.tolist()
 				selected_neg_samples = neg_samples.tolist()
 				if np.random.randint(0, 2):
-					sel_samples = random.choice(neg_samples)
+					sel_samples = choice(neg_samples)
 				else:
-					sel_samples = random.choice(pos_samples)
+					sel_samples = choice(pos_samples)
 
 			loss_class = model_classifier.train_on_batch([X, X2[:, sel_samples, :]], [Y1[:, sel_samples, :], Y2[:, sel_samples, :]])
 
@@ -273,11 +279,11 @@ for epoch_num in range(num_epochs):
 					print('Loss RPN regression: {}'.format(loss_rpn_regr))
 					print('Loss Detector classifier: {}'.format(loss_class_cls))
 					print('Loss Detector regression: {}'.format(loss_class_regr))
-					print('Elapsed time: {}'.format(time.time() - start_time))
+					print('Elapsed time: {}'.format(time() - start_time))
 
 				curr_loss = loss_rpn_cls + loss_rpn_regr + loss_class_cls + loss_class_regr
 				iter_num = 0
-				start_time = time.time()
+				start_time = time()
 
 				if curr_loss < best_loss:
 					if C.verbose:

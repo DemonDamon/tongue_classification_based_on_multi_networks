@@ -35,6 +35,5 @@ if __name__ == '__main__':
     #  'D:\\workfiles\\tongue_project(MaskRCNN and TF Object Detectuion API)\\tonge_recognization_tf_object_detection_API\\data\\tongue_train.csv')  
     # run('D:\\workfiles\\tongue_project(MaskRCNN and TF Object Detectuion API)\\tonge_recognization_tf_object_detection_API\\data\\test',\
     #  'D:\\workfiles\\tongue_project(MaskRCNN and TF Object Detectuion API)\\tonge_recognization_tf_object_detection_API\\data\\tongue_test.csv')  
-    run('./data/train','./data/tongue_train.csv')  
-    run('./data/test','./data/tongue_test.csv')  
- 
+    run('D:\\workfiles\\tongue_classification_based_on_multi_networks\\keras_frcnn\\/'
+        'test_image','D:\\workfiles\\tongue_classification_based_on_multi_networks\\keras_frcnn\\tongue_train.csv')

@@ -1,1 +1,4 @@
- python train_frcnn.py --path annotate.txt --parser self-defined --num_epochs 100 --horizontal_flips True --vertical_flips True --rot_90 True --utilize_transfer_learning True --including_top_weight False --output_weight_path '/root/damon_files/data/model_save_data/keras_frcnn_resnet50_with_pretrained_holistic_tongue_data.hdf5'
+ python train_frcnn.py --path annotate.txt --parser self-defined --num_epochs 100 --horizontal_flips True --vertical_flips True --rot_90 True --utilize_transfer_learning False
+
+
+ python train_frcnn.py --path 'annotate_test.txt' --parser self-defined

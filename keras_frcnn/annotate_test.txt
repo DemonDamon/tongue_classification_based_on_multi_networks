@@ -1,0 +1,2 @@
+/root/damon_files/data/holistic_tongue_data/train/WX00852.jpg,577,635,1753,2080,tongue
+/root/damon_files/data/holistic_tongue_data/train/WX00853.jpg,842,628,1818,2114,tongue
