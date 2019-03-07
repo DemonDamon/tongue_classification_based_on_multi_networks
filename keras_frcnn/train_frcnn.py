@@ -2,7 +2,6 @@ from __future__ import division
 
 from random import shuffle, choice
 from time import time
-from pprint import pprint
 from sys import setrecursionlimit
 from os import path
 from pickle import dump
@@ -38,6 +37,7 @@ parser.add_option("--output_weight_path", dest="output_weight_path", help="Outpu
 
 (options, args) = parser.parse_args()
 
+print('/n')
 print(" " + "-"*30 + " Preparing Configuration and Data " + "-"*30)
 
 if not options.train_path:   # if filename is not given
@@ -53,12 +53,14 @@ else:
 # pass the settings from the command line, and persist them in the config object
 C = config.Config()
 
+C.num_epochs = int(options.num_epochs)
+C.num_rois = int(options.num_rois)
 C.use_horizontal_flips = bool(options.horizontal_flips)
 C.use_vertical_flips = bool(options.vertical_flips)
 C.rot_90 = bool(options.rot_90)
-
+C.utilize_transfer_learning = bool(options.utilize_transfer_learning)
+C.including_top_weight = bool(options.including_top_weight)
 C.model_path = options.output_weight_path
-C.num_rois = int(options.num_rois)
 
 if options.backbone_network == 'vgg':
 	C.backbone_network = 'vgg'
@@ -77,12 +79,15 @@ if options.utilize_transfer_learning and not options.input_pretrained_weight_pat
 	if not path.exists('./pretrained_model_weights'):
 		C.base_net_weights = nn.download_imagenet_weight_file(options.including_top_weight)
 	else:
+		print(options.including_top_weight)
 		if not options.including_top_weight:
+			print(1)
 			if path.exists('./pretrained_model_weights/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5'):
 				C.base_net_weights = './pretrained_model_weights/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5'
 			else:
 				C.base_net_weights = nn.download_imagenet_weight_file(options.including_top_weight)
 		else:
+			print(2)
 			if path.exists('./pretrained_model_weights/resnet50_weights_tf_dim_ordering_tf_kernels.h5'):
 				C.base_net_weights = './pretrained_model_weights/resnet50_weights_tf_dim_ordering_tf_kernels.h5'
 			else:
@@ -107,14 +112,13 @@ C.class_mapping = class_mapping
 inv_map = {v: k for k, v in class_mapping.items()}
 
 print(' [*] Training images per class:', classes_count)
-# pprint(classes_count)
 print(' [*] Num classes (including bg) = {}'.format(len(classes_count)))
 
 config_output_filename = options.config_filename
 
 with open(config_output_filename, 'wb') as config_f:
 	dump(C,config_f)
-	print(' [*] Print out the attributes of Config:')
+	print(' [*] Print out all attributes of Config:')
 	for i in vars(C):
 		print('    ', i, ':', vars(C)[i])
 	print(' [*] Config has been written to {}, and can be loaded when testing to ensure correct results'.format(config_output_filename))
@@ -159,9 +163,9 @@ model_all = Model([img_input, roi_input], rpn[:2] + classifier)
 print(' [*] Have created the holistic model well. ')
 
 try:
-	print(' [*] loading weights from {}'.format(C.base_net_weights))
 	model_rpn.load_weights(C.base_net_weights, by_name=True)
 	model_classifier.load_weights(C.base_net_weights, by_name=True)
+	print(' [*] Have loaded weights from {}'.format(C.base_net_weights))
 except:
 	print(' [*] Could not load pretrained model weights. Weights can be found in the keras application folder \
 		https://github.com/fchollet/keras/tree/master/keras/applications')
@@ -171,7 +175,7 @@ optimizer_classifier = Adam(lr=1e-5)
 model_rpn.compile(optimizer=optimizer, loss=[losses.rpn_loss_cls(num_anchors), losses.rpn_loss_regr(num_anchors)])
 model_classifier.compile(optimizer=optimizer_classifier, loss=[losses.class_loss_cls, losses.class_loss_regr(len(classes_count)-1)], metrics={'dense_class_{}'.format(len(classes_count)): 'accuracy'})
 model_all.compile(optimizer='sgd', loss='mae')
-print(' [*] Have set up the optimized method parameter. ')
+print(' [*] Have set up the optimized method parameter. \n')
 
 print(" " + "-"*30 + " Starting training " + "-"*30)
 
