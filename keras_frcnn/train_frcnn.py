@@ -55,11 +55,16 @@ C = config.Config()
 
 C.num_epochs = int(options.num_epochs)
 C.num_rois = int(options.num_rois)
-C.use_horizontal_flips = bool(options.horizontal_flips)
-C.use_vertical_flips = bool(options.vertical_flips)
-C.rot_90 = bool(options.rot_90)
-C.utilize_transfer_learning = bool(options.utilize_transfer_learning)
-C.including_top_weight = bool(options.including_top_weight)
+C.use_horizontal_flips = options.use_horizontal_flips == 'True'
+C.use_vertical_flips = options.use_vertical_flips == 'True'
+C.rot_90 = options.rot_90 == 'True'
+C.utilize_transfer_learning = options.utilize_transfer_learning == 'True'
+C.including_top_weight = options.including_top_weight == 'True'
+# C.use_horizontal_flips = bool(options.horizontal_flips)
+# C.use_vertical_flips = bool(options.vertical_flips)
+# C.rot_90 = bool(options.rot_90)
+# C.utilize_transfer_learning = bool(options.utilize_transfer_learning)
+# C.including_top_weight = bool(options.including_top_weight)
 C.model_path = options.output_weight_path
 
 if options.backbone_network == 'vgg':
