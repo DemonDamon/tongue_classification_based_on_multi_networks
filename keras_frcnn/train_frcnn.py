@@ -60,11 +60,7 @@ C.use_vertical_flips = options.vertical_flips == 'True'
 C.rot_90 = options.rot_90 == 'True'
 C.utilize_transfer_learning = options.utilize_transfer_learning == 'True'
 C.including_top_weight = options.including_top_weight == 'True'
-# C.use_horizontal_flips = bool(options.horizontal_flips)
-# C.use_vertical_flips = bool(options.vertical_flips)
-# C.rot_90 = bool(options.rot_90)
-# C.utilize_transfer_learning = bool(options.utilize_transfer_learning)
-# C.including_top_weight = bool(options.including_top_weight)
+C.input_pretrained_weight_path = options.input_pretrained_weight_path
 C.model_path = options.output_weight_path
 
 if options.backbone_network == 'vgg':
@@ -77,30 +73,27 @@ else:
 	print(' [*] Not a valid model')
 	raise ValueError
 
-if options.utilize_transfer_learning and not options.input_pretrained_weight_path:
+if C.utilize_transfer_learning and not C.input_pretrained_weight_path:
 	# define to utilize transfer learning but if not specify "input_pretrained_weight_path" parameter,
 	# then default to download models from https://github.com/fchollet/deep-learning-models/releases/download/v0.2/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5
 	# to ./pretrained_model_weights folder.
 	if not path.exists('./pretrained_model_weights'):
-		C.base_net_weights = nn.download_imagenet_weight_file(options.including_top_weight)
+		C.base_net_weights = nn.download_imagenet_weight_file(C.including_top_weight)
 	else:
-		print(options.including_top_weight)
-		if not options.including_top_weight:
-			print(1)
+		if not C.including_top_weight:
 			if path.exists('./pretrained_model_weights/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5'):
 				C.base_net_weights = './pretrained_model_weights/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5'
 			else:
-				C.base_net_weights = nn.download_imagenet_weight_file(options.including_top_weight)
+				C.base_net_weights = nn.download_imagenet_weight_file(C.including_top_weight)
 		else:
-			print(2)
 			if path.exists('./pretrained_model_weights/resnet50_weights_tf_dim_ordering_tf_kernels.h5'):
 				C.base_net_weights = './pretrained_model_weights/resnet50_weights_tf_dim_ordering_tf_kernels.h5'
 			else:
-				C.base_net_weights = nn.download_imagenet_weight_file(options.including_top_weight)
-elif options.input_pretrained_weight_path:
+				C.base_net_weights = nn.download_imagenet_weight_file(C.including_top_weight)
+elif C.input_pretrained_weight_path:
 	# utilize self-defined pre-trained model weight, not download automatically but manually download
 	# in ./pretrained_model_weights folder
-	C.base_net_weights = options.input_pretrained_weight_path
+	C.base_net_weights = C.input_pretrained_weight_path
 else:
 	# not use transfer learning
 	C.base_net_weights = None

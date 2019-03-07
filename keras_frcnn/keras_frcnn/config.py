@@ -57,6 +57,9 @@ class Config:
 
 		self.model_path = 'model_frcnn.hdf5'
 
+		# the path of manually input pre-trained model weight
+		self.input_pretrained_weight_path = None
+
 		# use transfer learning or not
 		self.utilize_transfer_learning = True
 
