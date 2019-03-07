@@ -106,8 +106,8 @@ C.class_mapping = class_mapping
 
 inv_map = {v: k for k, v in class_mapping.items()}
 
-print(' [*] Training images per class:')
-pprint(classes_count)
+print(' [*] Training images per class:', classes_count)
+# pprint(classes_count)
 print(' [*] Num classes (including bg) = {}'.format(len(classes_count)))
 
 config_output_filename = options.config_filename
