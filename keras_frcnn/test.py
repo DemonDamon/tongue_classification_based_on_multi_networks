@@ -50,10 +50,9 @@ else:
 
 # pass the settings from the command line, and persist them in the config object
 C = config.Config()
+C.num_rois = options.num_rois
+print(' [*] ----')
+for i in vars(C):
+	print('    ', i, ':', vars(C)[i])
 
-
-
-
-all_imgs, classes_count, class_mapping = get_data(options.train_path)
-
-print(all_imgs)
+# all_imgs, classes_count, class_mapping = get_data(options.train_path)
