@@ -37,7 +37,7 @@ parser.add_option("--output_weight_path", dest="output_weight_path", help="Outpu
 
 (options, args) = parser.parse_args()
 
-print('/n')
+print('\n')
 print(" " + "-"*30 + " Preparing Configuration and Data " + "-"*30)
 
 if not options.train_path:   # if filename is not given
@@ -55,11 +55,11 @@ C = config.Config()
 
 C.num_epochs = int(options.num_epochs)
 C.num_rois = int(options.num_rois)
-C.use_horizontal_flips = options.horizontal_flips == 'True'
-C.use_vertical_flips = options.vertical_flips == 'True'
-C.rot_90 = options.rot_90 == 'True'
-C.utilize_transfer_learning = options.utilize_transfer_learning == 'True'
-C.including_top_weight = options.including_top_weight == 'True'
+C.use_horizontal_flips = (options.horizontal_flips == 'True') or (options.horizontal_flips == 'true')
+C.use_vertical_flips = (options.vertical_flips == 'True') or (options.vertical_flips == 'true')
+C.rot_90 = (options.rot_90 == 'True') or (options.rot_90 == 'true')
+C.utilize_transfer_learning = (options.utilize_transfer_learning == 'True') or (options.utilize_transfer_learning == 'true')
+C.including_top_weight = (options.including_top_weight == 'True') or (options.including_top_weight == 'true')
 C.input_pretrained_weight_path = options.input_pretrained_weight_path
 C.model_path = options.output_weight_path
 
