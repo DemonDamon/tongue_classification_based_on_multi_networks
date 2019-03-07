@@ -4,6 +4,9 @@ import copy
 
 
 def augment(img_data, config, augment=True):
+	# 1) flip image in 50% prob of each type, then change the coordinates of bboxes respectively
+	# 2) rotate image, then change the coordinates of bboxes
+	# 3) output changed image and renewed image data
 	assert 'filepath' in img_data
 	assert 'bboxes' in img_data
 	assert 'width' in img_data
