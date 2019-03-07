@@ -55,8 +55,8 @@ C = config.Config()
 
 C.num_epochs = int(options.num_epochs)
 C.num_rois = int(options.num_rois)
-C.use_horizontal_flips = options.use_horizontal_flips == 'True'
-C.use_vertical_flips = options.use_vertical_flips == 'True'
+C.use_horizontal_flips = options.horizontal_flips == 'True'
+C.use_vertical_flips = options.vertical_flips == 'True'
 C.rot_90 = options.rot_90 == 'True'
 C.utilize_transfer_learning = options.utilize_transfer_learning == 'True'
 C.including_top_weight = options.including_top_weight == 'True'
