@@ -26,14 +26,19 @@ parser.add_option("--parser", dest="parser", help="Parser to use. One of self-de
 parser.add_option("--num_epochs", type="int", dest="num_epochs", help="Number of epochs.", default=2000)
 parser.add_option("--num_rois", type="int", dest="num_rois", help="Number of RoIs to process at once.", default=32)
 parser.add_option("--backbone_network", dest="backbone_network", help="Base network including vgg and resnet50.", default='resnet50')
-parser.add_option("--horizontal_flips", dest="horizontal_flips", help="Augment with horizontal flips in training. (Default=false).", action="store_true", default=False)
-parser.add_option("--vertical_flips", dest="vertical_flips", help="Augment with vertical flips in training. (Default=false).", action="store_true", default=False)
-parser.add_option("--rot_90", dest="rot_90", help="Augment with 90 degree rotations in training. (Default=false).",action="store_true", default=False)
-parser.add_option("--config_filename", dest="config_filename", help="Location to store all the metadata related to the training (to be used when testing).",default="config.pickle")
-parser.add_option("--utilize_transfer_learning", dest="utilize_transfer_learning", help="Augment with using pre-trained model. (Default=true).",  action="store_true", default=True)
-parser.add_option("--including_top_weight", dest="including_top_weight", help="Augment with including top weight which between input and second layer network. (Default=false).",  action="store_true", default=False)
+parser.add_option("--horizontal_flips", dest="horizontal_flips", help="Augment with horizontal flips in training. (Default=false).", \
+				  action="store_true", default=False)
+parser.add_option("--vertical_flips", dest="vertical_flips", help="Augment with vertical flips in training. (Default=false).", \
+				  action="store_true", default=False)
+parser.add_option("--rot_90", dest="rot_90", help="Augment with 90 degree rotations in training. (Default=false).",\
+				  action="store_true", default=False)
+parser.add_option("--utilize_transfer_learning", dest="utilize_transfer_learning", help="Augment with using pre-trained model. (Default=false).",  \
+				  action="store_true", default=False)
+parser.add_option("--including_top_weight", dest="including_top_weight", help="Augment with including top weight which between input and second layer network. (Default=false).",  \
+				  action="store_true", default=False)
 parser.add_option("--input_pretrained_weight_path", dest="input_pretrained_weight_path", help="Input path of pre-trained weights.")
 parser.add_option("--output_weight_path", dest="output_weight_path", help="Output path for weights.", default='./model_frcnn.hdf5')
+parser.add_option("--config_filename", dest="config_filename", help="Location to store all the metadata related to the training (to be used when testing).",default="config.pickle")
 
 (options, args) = parser.parse_args()
 
@@ -55,11 +60,16 @@ C = config.Config()
 
 C.num_epochs = int(options.num_epochs)
 C.num_rois = int(options.num_rois)
-C.use_horizontal_flips = (options.horizontal_flips == 'True') or (options.horizontal_flips == 'true')
-C.use_vertical_flips = (options.vertical_flips == 'True') or (options.vertical_flips == 'true')
-C.rot_90 = (options.rot_90 == 'True') or (options.rot_90 == 'true')
-C.utilize_transfer_learning = (options.utilize_transfer_learning == 'True') or (options.utilize_transfer_learning == 'true')
-C.including_top_weight = (options.including_top_weight == 'True') or (options.including_top_weight == 'true')
+C.use_horizontal_flips = bool(options.horizontal_flips)
+C.use_vertical_flips = bool(options.vertical_flips)
+C.rot_90 = bool(options.rot_90)
+C.utilize_transfer_learning = bool(options.utilize_transfer_learning)
+C.including_top_weight = bool(options.including_top_weight)
+# C.use_horizontal_flips = (options.horizontal_flips == 'True') or (options.horizontal_flips == 'true')
+# C.use_vertical_flips = (options.vertical_flips == 'True') or (options.vertical_flips == 'true')
+# C.rot_90 = (options.rot_90 == 'True') or (options.rot_90 == 'true')
+# C.utilize_transfer_learning = (options.utilize_transfer_learning == 'True') or (options.utilize_transfer_learning == 'true')
+# C.including_top_weight = (options.including_top_weight == 'True') or (options.including_top_weight == 'true')
 C.input_pretrained_weight_path = options.input_pretrained_weight_path
 C.model_path = options.output_weight_path
 

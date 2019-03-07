@@ -61,7 +61,7 @@ class Config:
 		self.input_pretrained_weight_path = None
 
 		# use transfer learning or not
-		self.utilize_transfer_learning = True
+		self.utilize_transfer_learning = False
 
 		# include top layer od pre-trained model or not
 		self.including_top_weight = False
