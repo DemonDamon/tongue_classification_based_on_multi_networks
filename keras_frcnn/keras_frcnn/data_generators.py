@@ -78,13 +78,14 @@ class SampleSelector:
 
 def calc_rpn(C, img_data, width, height, resized_width, resized_height, img_length_calc_function):
 
-	downscale = float(C.rpn_stride)
-	anchor_sizes = C.anchor_box_scales
-	anchor_ratios = C.anchor_box_ratios
-	num_anchors = len(anchor_sizes) * len(anchor_ratios)	
+	downscale = float(C.rpn_stride) #16
+	anchor_sizes = C.anchor_box_scales #[128, 256, 512]
+	anchor_ratios = C.anchor_box_ratios #[[1, 1], [1./math.sqrt(2), 2./math.sqrt(2)], [2./math.sqrt(2), 1./math.sqrt(2)]]
+	num_anchors = len(anchor_sizes) * len(anchor_ratios) #9
 
-	# calculate the output map size based on the network architecture
-
+	# calculate the output map size based on resized width and resized height.
+	# for example, if resnet50 is choosed, it calculate the size of final output,
+	# using 7x7,3x3,1x1,1x1 kernels in order, with fixed stride size 2.
 	(output_width, output_height) = img_length_calc_function(resized_width, resized_height)
 
 	n_anchratios = len(anchor_ratios)
@@ -94,11 +95,10 @@ def calc_rpn(C, img_data, width, height, resized_width, resized_height, img_leng
 	y_is_box_valid = np.zeros((output_height, output_width, num_anchors))
 	y_rpn_regr = np.zeros((output_height, output_width, num_anchors * 4))
 
-	num_bboxes = len(img_data['bboxes'])
-
-	num_anchors_for_bbox = np.zeros(num_bboxes).astype(int)
-	best_anchor_for_bbox = -1*np.ones((num_bboxes, 4)).astype(int)
-	best_iou_for_bbox = np.zeros(num_bboxes).astype(np.float32)
+	num_bboxes = len(img_data['bboxes']) # the number of bounding boxes on image
+	num_anchors_for_bbox = np.zeros(num_bboxes).astype(int) # each element represents the number of anchors of each bounding box
+	best_anchor_for_bbox = -1*np.ones((num_bboxes, 4)).astype(int) # each row represents the coordinates[x1,x2,y1,y2] of best anchor for bounding box
+	best_iou_for_bbox = np.zeros(num_bboxes).astype(np.float32) # each element represents the best IoU of bounding box
 	best_x_for_bbox = np.zeros((num_bboxes, 4)).astype(int)
 	best_dx_for_bbox = np.zeros((num_bboxes, 4)).astype(np.float32)
 
@@ -112,15 +112,14 @@ def calc_rpn(C, img_data, width, height, resized_width, resized_height, img_leng
 		gta[bbox_num, 3] = bbox['y2'] * (resized_height / float(height))
 	
 	# rpn ground truth
-
-	for anchor_size_idx in range(len(anchor_sizes)):
-		for anchor_ratio_idx in range(n_anchratios):
+	for anchor_size_idx in range(len(anchor_sizes)): # 3
+		for anchor_ratio_idx in range(n_anchratios): # 3
 			anchor_x = anchor_sizes[anchor_size_idx] * anchor_ratios[anchor_ratio_idx][0]
 			anchor_y = anchor_sizes[anchor_size_idx] * anchor_ratios[anchor_ratio_idx][1]	
 			
 			for ix in range(output_width):					
 				# x-coordinates of the current anchor box	
-				x1_anc = downscale * (ix + 0.5) - anchor_x / 2
+				x1_anc = downscale * (ix + 0.5) - anchor_x / 2 # downscale=float(C.rpn_stride)
 				x2_anc = downscale * (ix + 0.5) + anchor_x / 2	
 				
 				# ignore boxes that go across image boundaries					
@@ -288,7 +287,8 @@ def get_anchor_gt(all_img_data, class_count, C, img_length_calc_function, backen
 					continue
 
 				# read in image, and optionally add augmentation
-
+				# img_data_aug: basic data of image, Dict type
+				# x_img: data read by opencv, numpy.ndarray type
 				if mode == 'train':
 					img_data_aug, x_img = data_augment.augment(img_data, C, augment=True)
 				else:
@@ -300,14 +300,16 @@ def get_anchor_gt(all_img_data, class_count, C, img_length_calc_function, backen
 				assert cols == width
 				assert rows == height
 
-				# get image dimensions for resizing
+				# get image dimensions after resizing, and make the length of smallest
+				# side is 600, min(resized_width,resized_height)=600
 				(resized_width, resized_height) = get_new_img_size(width, height, C.im_size)
 
-				# resize the image so that smalles side is length = 600px
+				# resize smallest side of image as length=600px, output type is numpy.ndarray
 				x_img = cv2.resize(x_img, (resized_width, resized_height), interpolation=cv2.INTER_CUBIC)
 
 				try:
-					y_rpn_cls, y_rpn_regr = calc_rpn(C, img_data_aug, width, height, resized_width, resized_height, img_length_calc_function)
+					y_rpn_cls, y_rpn_regr = calc_rpn(C, img_data_aug, width, height, resized_width, \
+													 resized_height, img_length_calc_function)
 				except:
 					continue
 
