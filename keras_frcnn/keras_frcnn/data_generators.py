@@ -102,10 +102,9 @@ def calc_rpn(C, img_data, width, height, resized_width, resized_height, img_leng
 	best_x_for_bbox = np.zeros((num_bboxes, 4)).astype(int)
 	best_dx_for_bbox = np.zeros((num_bboxes, 4)).astype(np.float32)
 
-	# get the GT box coordinates, and resize to account for image resizing
+	# resize the ground true box coordinates using the 'resized_width' and 'resized_height'
 	gta = np.zeros((num_bboxes, 4))
 	for bbox_num, bbox in enumerate(img_data['bboxes']):
-		# get the GT box coordinates, and resize to account for image resizing
 		gta[bbox_num, 0] = bbox['x1'] * (resized_width / float(width))
 		gta[bbox_num, 1] = bbox['x2'] * (resized_width / float(width))
 		gta[bbox_num, 2] = bbox['y1'] * (resized_height / float(height))
@@ -115,10 +114,10 @@ def calc_rpn(C, img_data, width, height, resized_width, resized_height, img_leng
 	for anchor_size_idx in range(len(anchor_sizes)): # 3
 		for anchor_ratio_idx in range(n_anchratios): # 3
 			anchor_x = anchor_sizes[anchor_size_idx] * anchor_ratios[anchor_ratio_idx][0]
-			anchor_y = anchor_sizes[anchor_size_idx] * anchor_ratios[anchor_ratio_idx][1]	
+			anchor_y = anchor_sizes[anchor_size_idx] * anchor_ratios[anchor_ratio_idx][1]
 			
-			for ix in range(output_width):					
-				# x-coordinates of the current anchor box	
+			for ix in range(output_width):
+				# x-coordinates of the current anchor box
 				x1_anc = downscale * (ix + 0.5) - anchor_x / 2 # downscale=float(C.rpn_stride)
 				x2_anc = downscale * (ix + 0.5) + anchor_x / 2	
 				
@@ -144,15 +143,14 @@ def calc_rpn(C, img_data, width, height, resized_width, resized_height, img_leng
 					best_iou_for_loc = 0.0
 
 					for bbox_num in range(num_bboxes):
-						
 						# get IOU of the current GT box and the current anchor box
 						curr_iou = iou([gta[bbox_num, 0], gta[bbox_num, 2], gta[bbox_num, 1], gta[bbox_num, 3]], [x1_anc, y1_anc, x2_anc, y2_anc])
 						# calculate the regression targets if they will be needed
 						if curr_iou > best_iou_for_bbox[bbox_num] or curr_iou > C.rpn_max_overlap:
 							cx = (gta[bbox_num, 0] + gta[bbox_num, 1]) / 2.0
 							cy = (gta[bbox_num, 2] + gta[bbox_num, 3]) / 2.0
-							cxa = (x1_anc + x2_anc)/2.0
-							cya = (y1_anc + y2_anc)/2.0
+							cxa = (x1_anc + x2_anc) / 2.0
+							cya = (y1_anc + y2_anc) / 2.0
 
 							tx = (cx - cxa) / (x2_anc - x1_anc)
 							ty = (cy - cya) / (y2_anc - y1_anc)
@@ -160,7 +158,6 @@ def calc_rpn(C, img_data, width, height, resized_width, resized_height, img_leng
 							th = np.log((gta[bbox_num, 3] - gta[bbox_num, 2]) / (y2_anc - y1_anc))
 						
 						if img_data['bboxes'][bbox_num]['class'] != 'bg':
-
 							# all GT boxes should be mapped to an anchor box, so we keep track of which anchor box was best
 							if curr_iou > best_iou_for_bbox[bbox_num]:
 								best_anchor_for_bbox[bbox_num] = [jy, ix, anchor_ratio_idx, anchor_size_idx]
@@ -184,10 +181,10 @@ def calc_rpn(C, img_data, width, height, resized_width, resized_height, img_leng
 									bbox_type = 'neutral'
 
 					# turn on or off outputs depending on IOUs
-					if bbox_type == 'neg':
+					if bbox_type == 'neg': # ('class'!='bg' && iou<0.3) or ('class'=='bg')
 						y_is_box_valid[jy, ix, anchor_ratio_idx + n_anchratios * anchor_size_idx] = 1
 						y_rpn_overlap[jy, ix, anchor_ratio_idx + n_anchratios * anchor_size_idx] = 0
-					elif bbox_type == 'neutral':
+					elif bbox_type == 'neutral': # is not
 						y_is_box_valid[jy, ix, anchor_ratio_idx + n_anchratios * anchor_size_idx] = 0
 						y_rpn_overlap[jy, ix, anchor_ratio_idx + n_anchratios * anchor_size_idx] = 0
 					elif bbox_type == 'pos':
@@ -197,7 +194,6 @@ def calc_rpn(C, img_data, width, height, resized_width, resized_height, img_leng
 						y_rpn_regr[jy, ix, start:start+4] = best_regr
 
 	# we ensure that every bbox has at least one positive RPN region
-
 	for idx in range(num_anchors_for_bbox.shape[0]):
 		if num_anchors_for_bbox[idx] == 0:
 			# no box with an IOU greater than zero ...
@@ -314,7 +310,6 @@ def get_anchor_gt(all_img_data, class_count, C, img_length_calc_function, backen
 					continue
 
 				# Zero-center by mean pixel, and preprocess image
-
 				x_img = x_img[:,:, (2, 1, 0)]  # BGR -> RGB
 				x_img = x_img.astype(np.float32)
 				x_img[:, :, 0] -= C.img_channel_mean[0]

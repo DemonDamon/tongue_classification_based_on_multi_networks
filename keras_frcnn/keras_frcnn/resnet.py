@@ -187,28 +187,32 @@ def nn_base(input_tensor=None, trainable=False):
     else:
         bn_axis = 1
 
-    x = ZeroPadding2D((3, 3))(img_input)
+    # personal_explanation:
+    #    fill the bounding of 2-d input(like image) with zero, to control the size of output feature map
+    # official explanation:
+    #    This layer can add rows and columns of zeros at the top, bottom, left and right side of an image tensor.
+    x = ZeroPadding2D((3, 3))(img_input) # equals to 'ZeroPadding2D(padding=3)(img_input)'
 
-    x = Convolution2D(64, (7, 7), strides=(2, 2), name='conv1', trainable = trainable)(x)
+    x = Convolution2D(64, (7, 7), strides=(2, 2), name='conv1', trainable=trainable)(x)
     x = FixedBatchNormalization(axis=bn_axis, name='bn_conv1')(x)
     x = Activation('relu')(x)
     x = MaxPooling2D((3, 3), strides=(2, 2))(x)
 
-    x = conv_block(x, 3, [64, 64, 256], stage=2, block='a', strides=(1, 1), trainable = trainable)
-    x = identity_block(x, 3, [64, 64, 256], stage=2, block='b', trainable = trainable)
-    x = identity_block(x, 3, [64, 64, 256], stage=2, block='c', trainable = trainable)
+    x = conv_block(x, 3, [64, 64, 256], stage=2, block='a', strides=(1, 1), trainable=trainable)
+    x = identity_block(x, 3, [64, 64, 256], stage=2, block='b', trainable=trainable)
+    x = identity_block(x, 3, [64, 64, 256], stage=2, block='c', trainable=trainable)
 
-    x = conv_block(x, 3, [128, 128, 512], stage=3, block='a', trainable = trainable)
-    x = identity_block(x, 3, [128, 128, 512], stage=3, block='b', trainable = trainable)
-    x = identity_block(x, 3, [128, 128, 512], stage=3, block='c', trainable = trainable)
-    x = identity_block(x, 3, [128, 128, 512], stage=3, block='d', trainable = trainable)
+    x = conv_block(x, 3, [128, 128, 512], stage=3, block='a', trainable=trainable)
+    x = identity_block(x, 3, [128, 128, 512], stage=3, block='b', trainable=trainable)
+    x = identity_block(x, 3, [128, 128, 512], stage=3, block='c', trainable=trainable)
+    x = identity_block(x, 3, [128, 128, 512], stage=3, block='d', trainable=trainable)
 
-    x = conv_block(x, 3, [256, 256, 1024], stage=4, block='a', trainable = trainable)
-    x = identity_block(x, 3, [256, 256, 1024], stage=4, block='b', trainable = trainable)
-    x = identity_block(x, 3, [256, 256, 1024], stage=4, block='c', trainable = trainable)
-    x = identity_block(x, 3, [256, 256, 1024], stage=4, block='d', trainable = trainable)
-    x = identity_block(x, 3, [256, 256, 1024], stage=4, block='e', trainable = trainable)
-    x = identity_block(x, 3, [256, 256, 1024], stage=4, block='f', trainable = trainable)
+    x = conv_block(x, 3, [256, 256, 1024], stage=4, block='a', trainable=trainable)
+    x = identity_block(x, 3, [256, 256, 1024], stage=4, block='b', trainable=trainable)
+    x = identity_block(x, 3, [256, 256, 1024], stage=4, block='c', trainable=trainable)
+    x = identity_block(x, 3, [256, 256, 1024], stage=4, block='d', trainable=trainable)
+    x = identity_block(x, 3, [256, 256, 1024], stage=4, block='e', trainable=trainable)
+    x = identity_block(x, 3, [256, 256, 1024], stage=4, block='f', trainable=trainable)
 
     return x
 
