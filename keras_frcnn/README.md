@@ -103,8 +103,13 @@ change the path in `train_frcnn.py` at line 315). Accuracy and loss plot are sho
 
 ```
 import matplotlib.pyplot as plt
+import pickle
+
 plt.rcParams['savefig.dpi'] = 600 
 plt.rcParams['figure.dpi'] = 600 
+
+f = open('./test_predicted_output/record_loss_acc.pkl','rb')
+data = pickle.load(f)
 epoch = len(data)
 fig = plt.figure(figsize=(17, 5))
 plt.subplot(121)
