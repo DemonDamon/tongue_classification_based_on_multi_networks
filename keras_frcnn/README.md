@@ -27,7 +27,7 @@ simply do:
     ` python train_frcnn.py --path annotate.txt --parser self-defined --num_epochs 100 --horizontal_flips True 
 --vertical_flips True --rot_90 True --utilize_transfer_learning True --including_top_weight False --output_weight_path './model_name.hdf5'`
 
-    Parameter explanation:
+    `train_frcnn.py` Parameter explanation:
     
     `--path`: Path of training data
 
@@ -58,11 +58,32 @@ simply do:
 - Running `train_frcnn.py` will write weights to disk to .hdf5 file, as well as all the setting of the training run to a `pickle` file. These
 settings can then be loaded by `test_frcnn.py` for any testing.
 
-- test_frcnn.py can be used to perform inference, given pretrained weights and a config file. Specify a path to the folder containing
+- `test_frcnn.py` can be used to perform inference, given pretrained weights and a config file. Specify a path to the folder containing
 images:
-    `python test_frcnn.py -p /path/to/test_data/`
-- Data augmentation can be applied by specifying `--hf` for horizontal flips, `--vf` for vertical flips and `--rot` for 90 degree rotations
+    ` python test_frcnn.py python test_frcnn.py --path ./test_images --input_weight_path './model_name.hdf5' 
+    --is_save_cropped True --is_save_whole_image True --save_img_root_folder_path './test_predicted_output'`
+    
+    `test_frcnn.py` Parameter explanation:
+    
+    `--path`: Path of test data
 
+    `--num_rois`: Number of RoIs to process at once, default=32
+    
+    `--backbone_network`: Base network including vgg and resnet50, default=resnet50
+    
+    `--config_filename`: Location to read the metadata related to the training (generated when training), default=config.pickle
+    
+    `--input_weight_path`: Input path for trained weights
+    
+    `--is_show_cropped`: Whether plot the cropped images. (Default=false)
+    
+    `--is_save_cropped`: Whether save the cropped images. (Default=false)
+    
+    `--is_show_whole`: Whether plot the whole images with predicted bounding box. (Default=false)
+    
+    `--is_save_whole_image`: Whether save the whole images with predicted bounding box. (Default=false)
+    
+    `--save_img_root_folder_path`: Folder path of storing predicted images
 
 
 NOTES:
