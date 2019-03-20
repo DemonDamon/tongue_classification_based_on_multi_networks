@@ -95,10 +95,11 @@ paper. The anchor box sizes are [128, 256, 512] and the ratios are [1:1, 1:2, 2:
 
 Example output:
 
-![ex1](http://i.imgur.com/7Lmb2RC.png)
-![ex2](http://i.imgur.com/h58kCIV.png)
-![ex3](http://i.imgur.com/EbvGBaG.png)
-![ex4](http://i.imgur.com/i5UAgLb.png)
+![ex1](https://github.com/DemonDamon/tongue_classification_based_on_multi_networks/blob/master/keras_frcnn/test_predicted_output/1.jpg)
+![ex2](https://github.com/DemonDamon/tongue_classification_based_on_multi_networks/blob/master/keras_frcnn/test_predicted_output/2.jpg)
+![ex3](https://github.com/DemonDamon/tongue_classification_based_on_multi_networks/blob/master/keras_frcnn/test_predicted_output/3.jpg)
+![ex4](https://github.com/DemonDamon/tongue_classification_based_on_multi_networks/blob/master/keras_frcnn/test_predicted_output/4.jpg)
+![ex5](https://github.com/DemonDamon/tongue_classification_based_on_multi_networks/blob/master/keras_frcnn/test_predicted_output/5.jpg)
 
 ISSUES:
 
