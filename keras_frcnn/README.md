@@ -4,7 +4,7 @@ cloned from https://github.com/kbardool/keras-frcnn which using VGG-16 or ResNet
 deeper network like VGG-19 and ResNet-101 as backbone instead.
 
 USAGE:
-- Use tensorflow as backend is highly recommended, even though Theano works as well.
+- Use tensorflow as backend is highly recommended.
 - `train_frcnn.py` can be used to train a model. To train on Pascal VOC data, simply do:
 `python train_frcnn.py -p /path/to/pascalvoc/`. 
 - the Pascal VOC data set (images and annotations for bounding boxes around the classified objects) can be obtained from: http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar
@@ -15,9 +15,9 @@ line containing:
 
     For example:
 
-    /data/imgs/img_001.jpg,837,346,981,456,cow
+    /data/imgs/img_001.jpg,837,346,981,456,tongue
     
-    /data/imgs/img_002.jpg,215,312,279,391,cat
+    /data/imgs/img_002.jpg,215,312,279,391,tongue
 
     The classes will be inferred from the file. To use the self-defined parser instead of the default pascal voc style parser,
     use the command line option `-o self-defined`. For example `python train_frcnn.py -o self-defined -p my_data.txt`.
