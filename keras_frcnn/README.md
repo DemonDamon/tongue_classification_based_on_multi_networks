@@ -101,6 +101,29 @@ change the path in `train_frcnn.py` at line 315). Accuracy and loss plot are sho
 
 ![ex6](https://github.com/DemonDamon/tongue_classification_based_on_multi_networks/blob/master/keras_frcnn/test_predicted_output/acc_and_loss_plot.jpg)
 
+```
+import matplotlib.pyplot as plt
+plt.rcParams['savefig.dpi'] = 600 
+plt.rcParams['figure.dpi'] = 600 
+epoch = len(data)
+fig = plt.figure(figsize=(17, 5))
+plt.subplot(121)
+plt.plot(range(epoch), data['class_acc'], label='class_acc')
+plt.title('Training Accuracy over ' + str(epoch) + ' Epochs', size=15)
+plt.legend()
+plt.grid(True)
+plt.subplot(122)
+plt.plot(range(epoch), data['loss_class_cls'], label='loss_class_cls')
+plt.plot(range(epoch), data['loss_class_regr'], label='loss_class_regr')
+plt.plot(range(epoch), data['loss_rpn_cls'], label='loss_rpn_cls')
+plt.plot(range(epoch), data['loss_rpn_regr'], label='loss_rpn_regr')
+plt.title('Loss over ' + str(epoch) + ' Epochs', size=15)
+plt.legend()
+plt.grid(True)
+plt.show()
+fig.savefig('acc_and_loss_plot.jpg')
+```
+
 Then output the testing images with predicted bounding box above:
 
 ![ex2](https://github.com/DemonDamon/tongue_classification_based_on_multi_networks/blob/master/keras_frcnn/test_predicted_output/2.jpg)
