@@ -7,6 +7,7 @@ from os import path
 from pickle import dump
 import numpy as np
 from optparse import OptionParser
+from pandas import DataFrame
 
 from keras import backend as K
 from keras.optimizers import Adam, SGD, RMSprop
@@ -191,6 +192,8 @@ class_mapping_inv = {v: k for k, v in class_mapping.items()}
 
 vis = True
 
+records = DataFrame({'class_acc':[],'loss_rpn_cls':[],'loss_rpn_regr':[],'loss_class_cls':[],'loss_class_regr':[]})
+
 for epoch_num in range(num_epochs):
 
 	progbar = generic_utils.Progbar(epoch_length)
@@ -282,6 +285,9 @@ for epoch_num in range(num_epochs):
 				rpn_accuracy_for_epoch = []
 
 				if C.verbose:
+					records = records.append({'class_acc':class_acc,'loss_rpn_cls':loss_rpn_cls,\
+											  'loss_rpn_regr':loss_rpn_regr,'loss_class_cls':loss_class_cls,\
+											  'loss_class_regr':loss_class_regr}, ignore_index=True)
 					print('  - Mean number of bounding boxes from RPN overlapping ground truth boxes: {}'.format(mean_overlapping_bboxes))
 					print('  - Classifier accuracy for bounding boxes from RPN: {}'.format(class_acc))
 					print('  - Loss RPN classifier: {}'.format(loss_rpn_cls))
@@ -306,4 +312,7 @@ for epoch_num in range(num_epochs):
 			print(' [*] Exception: {}'.format(e))
 			continue
 
+with open('/root/damon_files/data/model_save_data/record_loss_acc.pkl', 'wb') as record:
+	dump(records,record)
+	print(' [*] Have serialized the loss and acc DataFrame type data.')
 print(' [*] Training complete, exiting.')
