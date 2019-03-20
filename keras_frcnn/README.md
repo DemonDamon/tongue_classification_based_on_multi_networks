@@ -108,6 +108,5 @@ ISSUES:
 `ValueError: There is a negative shape in the graph!`    
     than update keras to the newest version
 
-- This repo was developed using `python2`. `python3` should work thanks to the contribution of a number of users.
-
-- If you run out of memory, try reducing the number of ROIs that are processed simultaneously. Try passing a lower `-n` to `train_frcnn.py`. Alternatively, try reducing the image size from the default value of 600 (this setting is found in `config.py`.
+- If you run out of memory, try reducing the number of ROIs that are processed simultaneously. Try passing a lower `--num_rois` to `train_frcnn.py`. 
+Alternatively, try reducing the image size from the default value of 600 (this setting is found in `config.py`).
