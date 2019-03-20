@@ -23,7 +23,7 @@ setrecursionlimit(40000)
 parser = OptionParser()
 
 parser.add_option("--path", dest="train_path", help="Path of training data.")
-parser.add_option("--parser", dest="parser", help="Parser to use. One of self-defined or pascal_voc",default="pascal_voc")
+parser.add_option("--parser", dest="parser", help="Parser to use. One of self-defined or pascal_voc",default="self-defined")
 parser.add_option("--num_epochs", type="int", dest="num_epochs", help="Number of epochs.", default=2000)
 parser.add_option("--num_rois", type="int", dest="num_rois", help="Number of RoIs to process at once.", default=32)
 parser.add_option("--backbone_network", dest="backbone_network", help="Base network including vgg and resnet50.", default='resnet50')
