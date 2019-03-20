@@ -30,9 +30,7 @@ simply do:
     Parameter explanation:
     
     `--path`: Path of training data
-    
     `--parser`: Parser to use. One of self-defined or pascal_voc. Default is self-defined
-    
     `--num_epochs`: Number of epochs
     
 - Running `train_frcnn.py` will write weights to disk to .hdf5 file, as well as all the setting of the training run to a `pickle` file. These
