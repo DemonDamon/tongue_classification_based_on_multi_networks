@@ -85,13 +85,12 @@ parser.add_option("--config_filename", dest="config_filename", help=
 				"Location to read the metadata related to the training (generated when training).",
 				default="config.pickle")
 parser.add_option("-o", "--parser", dest="parser", help="Parser to use. One of self-defined or pascal_voc",
-				default="pascal_voc"),
+				default="self-defined"),
 
 (options, args) = parser.parse_args()
 
 if not options.test_path:   # if filename is not given
 	parser.error('Error: path to test data must be specified. Pass --path to command line')
-
 
 if options.parser == 'pascal_voc':
 	from keras_frcnn.pascal_voc_parser import get_data
@@ -102,7 +101,7 @@ else:
 
 config_output_filename = options.config_filename
 
-with open(config_output_filename, 'r') as f_in:
+with open(config_output_filename, 'rb') as f_in:
 	C = pickle.load(f_in)
 
 # turn off any data augmentation at test time
