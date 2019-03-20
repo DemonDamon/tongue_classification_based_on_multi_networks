@@ -1,6 +1,6 @@
 # keras-frcnn
 Keras implementation of Faster R-CNN on Tongue Detection: Towards Real-Time Object Detection with Region Proposal Networks.
-cloned from https://github.com/kbardool/keras-frcnn which using VGG-16 or ResNet-50 as backbone.
+cloned from https://github.com/kbardool/keras-frcnn which using VGG-16 or ResNet-50 as backbone(ResNet-50 is recommended).
 
 USAGE:
 - I change the codes based on tensorflow as backend, so it must throw some errors when using theano.
@@ -97,7 +97,7 @@ Example output:
 
 When training the data, the accuracy and loss of each epoch will be recored as .pkl file
 stored in `test_predicted_output` folder(or you can self-defined a new one, but make sure
-change the path in `train_frcnn.py` at line 315). Plot is shown below:
+change the path in `train_frcnn.py` at line 315). Accuracy and loss plot are shown below:
 
 ![ex6](https://github.com/DemonDamon/tongue_classification_based_on_multi_networks/blob/master/keras_frcnn/test_predicted_output/acc_and_loss_plot.jpg)
 
