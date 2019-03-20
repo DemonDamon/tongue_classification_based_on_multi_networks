@@ -103,11 +103,7 @@ change the path in `train_frcnn.py` at line 315). Plot is shown below:
 
 Then output the testing images with predicted bounding box above:
 
-![ex1](https://github.com/DemonDamon/tongue_classification_based_on_multi_networks/blob/master/keras_frcnn/test_predicted_output/1.jpg)
 ![ex2](https://github.com/DemonDamon/tongue_classification_based_on_multi_networks/blob/master/keras_frcnn/test_predicted_output/2.jpg)
-![ex3](https://github.com/DemonDamon/tongue_classification_based_on_multi_networks/blob/master/keras_frcnn/test_predicted_output/3.jpg)
-![ex4](https://github.com/DemonDamon/tongue_classification_based_on_multi_networks/blob/master/keras_frcnn/test_predicted_output/4.jpg)
-![ex5](https://github.com/DemonDamon/tongue_classification_based_on_multi_networks/blob/master/keras_frcnn/test_predicted_output/5.jpg)
 
 
 ISSUES:
