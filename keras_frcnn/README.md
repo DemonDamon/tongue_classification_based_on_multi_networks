@@ -3,7 +3,7 @@ Keras implementation of Faster R-CNN on Tongue Detection: Towards Real-Time Obje
 cloned from https://github.com/kbardool/keras-frcnn which using VGG-16 or ResNet-50 as backbone.
 
 USAGE:
-- Use tensorflow as backend is highly recommended.
+- I change the codes based on tensorflow as backend, so it must throw some errors when using theano.
 - I prefer using LableImg(you can obtain from: https://tzutalin.github.io/labelImg/) to label, and it will generate .xml file for 
 each image, then using `xml_to_csv.py` to unify the main information like `filename,width,height,class,xmin,ymin,xmax,ymax` of each 
 picture into one .csv file.
@@ -60,6 +60,7 @@ settings can then be loaded by `test_frcnn.py` for any testing.
 
 - `test_frcnn.py` can be used to perform inference, given pretrained weights and a config file. Specify a path to the folder containing
 images:
+
     ` python test_frcnn.py python test_frcnn.py --path ./test_images --input_weight_path './model_name.hdf5' 
     --is_save_cropped True --is_save_whole_image True --save_img_root_folder_path './test_predicted_output'`
     
@@ -89,7 +90,6 @@ images:
 NOTES:
 - config.py contains all settings for the train or test run. The default settings match those in the original Faster-RCNN
 paper. The anchor box sizes are [128, 256, 512] and the ratios are [1:1, 1:2, 2:1].
-- The theano backend by default uses a 7x7 pooling region, instead of 14x14 as in the frcnn paper. This cuts down compiling time slightly.
 - The tensorflow backend performs a resize on the pooling region, instead of max pooling. This is much more efficient and has little impact on results.
 
 
