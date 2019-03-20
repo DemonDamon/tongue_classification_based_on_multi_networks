@@ -18,9 +18,15 @@ picture into one .csv file.
     ./test_image/WX00853.jpg,842,628,1818,2114,tongue
     
 - `train_frcnn.py` can be used to train a model. To train on self-defined dataset(if .txt file created by prior step named `annotate.txt`,
-simply do: `python train_frcnn.py --path ./annotate.txt`. But if want to utilize augmentation and transfer learning,
-we can set more complicated like ` python train_frcnn.py --path annotate.txt --parser self-defined --num_epochs 100 --horizontal_flips True 
---vertical_flips True --rot_90 True --utilize_transfer_learning True --including_top_weight False --output_weight_path './model_name.hdf5'`，
+simply do: 
+
+    `python train_frcnn.py --path ./annotate.txt`
+    
+    But if want to utilize augmentation and transfer learning, we can set more complicated like:
+
+    ` python train_frcnn.py --path annotate.txt --parser self-defined --num_epochs 100 --horizontal_flips True 
+--vertical_flips True --rot_90 True --utilize_transfer_learning True --including_top_weight False --output_weight_path './model_name.hdf5'`
+
     Parameter explanation:
     `--path`: Path of training data
     `--parser`: Parser to use. One of self-defined or pascal_voc. Default is self-defined
