@@ -95,6 +95,14 @@ paper. The anchor box sizes are [128, 256, 512] and the ratios are [1:1, 1:2, 2:
 
 Example output:
 
+When training the data, the accuracy and loss of each epoch will be recored as .pkl file
+stored in `test_predicted_output` folder(or you can self-defined a new one, but make sure
+change the path in `train_frcnn.py` at line 315). Plot is shown below:
+
+![ex6](https://github.com/DemonDamon/tongue_classification_based_on_multi_networks/blob/master/keras_frcnn/test_predicted_output/acc_and_loss_plot.jpg)
+
+Then output the testing images with predicted bounding box above:
+
 ![ex1](https://github.com/DemonDamon/tongue_classification_based_on_multi_networks/blob/master/keras_frcnn/test_predicted_output/1.jpg)
 ![ex2](https://github.com/DemonDamon/tongue_classification_based_on_multi_networks/blob/master/keras_frcnn/test_predicted_output/2.jpg)
 ![ex3](https://github.com/DemonDamon/tongue_classification_based_on_multi_networks/blob/master/keras_frcnn/test_predicted_output/3.jpg)

@@ -312,7 +312,7 @@ for epoch_num in range(num_epochs):
 			print(' [*] Exception: {}'.format(e))
 			continue
 
-with open('/root/damon_files/data/model_save_data/record_loss_acc.pkl', 'wb') as record:
+with open('./test_predicted_output/record_loss_acc.pkl', 'wb') as record:
 	dump(records,record)
 	print(' [*] Have serialized the loss and acc DataFrame type data.')
 print(' [*] Training complete, exiting.')
