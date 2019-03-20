@@ -30,9 +30,31 @@ simply do:
     Parameter explanation:
     
     `--path`: Path of training data
-    `--parser`: Parser to use. One of self-defined or pascal_voc. Default is self-defined
+
+    `--parser`: Parser to use. One of self-defined or pascal_voc, and default is self-defined
+    
     `--num_epochs`: Number of epochs
     
+    `--num_rois`: Number of RoIs to process at once
+
+    `--backbone_network`: Base network including vgg and resnet50, and default is self-defined
+    
+    `--horizontal_flips`: Augment with horizontal flips in training. (Default=false)
+    
+    `--vertical_flips`: Augment with vertical flips in training. (Default=false)
+    
+    `--rot_90`: Augment with 90 degree rotations in training. (Default=false)
+    
+    `--utilize_transfer_learning`: Augment with using pre-trained model. (Default=false)
+    
+    `--including_top_weight`: Augment with including top weight which between input and second layer network. (Default=false)
+    
+    `--input_pretrained_weight_path`: Input path of pre-trained weights
+    
+    `--output_weight_path`: Output path for weights
+    
+    `--config_filename`: Location to store all the metadata related to the training (to be used when testing)
+
 - Running `train_frcnn.py` will write weights to disk to .hdf5 file, as well as all the setting of the training run to a `pickle` file. These
 settings can then be loaded by `test_frcnn.py` for any testing.
 
