@@ -28,9 +28,13 @@ simply do:
 --vertical_flips True --rot_90 True --utilize_transfer_learning True --including_top_weight False --output_weight_path './model_name.hdf5'`
 
     Parameter explanation:
+    
     `--path`: Path of training data
+    
     `--parser`: Parser to use. One of self-defined or pascal_voc. Default is self-defined
+    
     `--num_epochs`: Number of epochs
+    
 - Running `train_frcnn.py` will write weights to disk to .hdf5 file, as well as all the setting of the training run to a `pickle` file. These
 settings can then be loaded by `test_frcnn.py` for any testing.
 
