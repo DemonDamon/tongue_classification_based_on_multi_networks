@@ -1,26 +1,24 @@
 # keras-frcnn
 Keras implementation of Faster R-CNN on Tongue Detection: Towards Real-Time Object Detection with Region Proposal Networks.
-cloned from https://github.com/kbardool/keras-frcnn which using VGG-16 or ResNet-50 as backbone. Here I am trying to use 
-deeper network like VGG-19 and ResNet-101 as backbone instead.
+cloned from https://github.com/kbardool/keras-frcnn which using VGG-16 or ResNet-50 as backbone.
 
 USAGE:
 - Use tensorflow as backend is highly recommended.
-- `train_frcnn.py` can be used to train a model. To train on Pascal VOC data, simply do:
-`python train_frcnn.py -p /path/to/pascalvoc/`. 
-- the Pascal VOC data set (images and annotations for bounding boxes around the classified objects) can be obtained from: http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar
-- self_defined_parser.py provides an alternative way to input data, using a text file. Simply provide a text file, with each
-line containing:
+- I prefer using LableImg(you can obtain from: https://tzutalin.github.io/labelImg/) to label, and it will generate .xml file for 
+each image, then using `xml_to_csv.py` to unify the main information like `filename,width,height,class,xmin,ymin,xmax,ymax` of each 
+picture into one .csv file.
+- Afterwards, create .txt file by `create_annotation_txt_file.py` for training convenience, with each line containing:
 
     `filepath,x1,y1,x2,y2,class_name`
-
+    
     For example:
 
-    /data/imgs/img_001.jpg,837,346,981,456,tongue
+    ./test_image/WX00852.jpg,577,635,1753,2080,tongue
     
-    /data/imgs/img_002.jpg,215,312,279,391,tongue
-
-    The classes will be inferred from the file. To use the self-defined parser instead of the default pascal voc style parser,
-    use the command line option `-o self-defined`. For example `python train_frcnn.py -o self-defined -p my_data.txt`.
+    ./test_image/WX00853.jpg,842,628,1818,2114,tongue
+    
+- `train_frcnn.py` can be used to train a model. To train on self-defined dataset(if .txt file created by prior step named `annotate.txt`,
+simply do: `python train_frcnn.py --path ./annotate.txt --parser self-defined`. 
 
 - Running `train_frcnn.py` will write weights to disk to an hdf5 file, as well as all the setting of the training run to a `pickle` file. These
 settings can then be loaded by `test_frcnn.py` for any testing.
