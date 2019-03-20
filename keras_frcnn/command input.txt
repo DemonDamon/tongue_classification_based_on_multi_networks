@@ -1,4 +1,0 @@
- python train_frcnn.py --path annotate.txt --parser self-defined --num_epochs 100 --horizontal_flips True --vertical_flips True --rot_90 True --utilize_transfer_learning False
-
-
- python train_frcnn.py --path 'annotate_test.txt' --parser self-defined

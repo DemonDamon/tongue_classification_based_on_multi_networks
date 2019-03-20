@@ -25,7 +25,10 @@ simply do:
     But if want to utilize augmentation and transfer learning, we can set more complicated like:
 
     ` python train_frcnn.py --path annotate.txt --parser self-defined --num_epochs 100 --horizontal_flips True 
---vertical_flips True --rot_90 True --utilize_transfer_learning True --including_top_weight False --output_weight_path './model_name.hdf5'`
+--vertical_flips True --rot_90 True --utilize_transfer_learning True --output_weight_path './model_name.hdf5'`
+
+    [!] Here I want clarify one issue that, for example if you do not want to use to use transfer learning, just ignore the parameter, and please
+    not setting as `--utilize_transfer_learning False`, it will set as True actually. Others like that.
 
     `train_frcnn.py` Parameter explanation:
     
