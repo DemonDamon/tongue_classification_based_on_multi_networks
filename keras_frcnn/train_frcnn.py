@@ -142,7 +142,7 @@ if K.image_dim_ordering() == 'th':
 else:
 	input_shape_img = (None, None, 3)
 
-img_input = Input(shape=input_shape_img)
+img_input = Input(shape=input_shape_img) # return a tensor
 roi_input = Input(shape=(None, 4))
 
 # define the base network (resnet here, can be VGG, Inception, etc)
@@ -155,19 +155,24 @@ rpn = nn.rpn(shared_layers, num_anchors)
 classifier = nn.classifier(shared_layers, roi_input, C.num_rois, nb_classes=len(classes_count), trainable=True)
 
 model_rpn = Model(img_input, rpn[:2])
+# print(' [*] model_rpn summary:')
+# model_rpn.summary()
+
 model_classifier = Model([img_input, roi_input], classifier)
+# print(' [*] model_classifier summary:')
+# model_classifier.summary()
 
 # this is a model that holds both the RPN and the classifier, used to load/save weights for the models
 model_all = Model([img_input, roi_input], rpn[:2] + classifier)
-print(' [*] Have created the holistic model well. ')
+# print(' [*] model_all summary:')
+# model_all.summary()
 
 try:
 	model_rpn.load_weights(C.base_net_weights, by_name=True)
 	model_classifier.load_weights(C.base_net_weights, by_name=True)
 	print(' [*] Have loaded weights from {}'.format(C.base_net_weights))
 except:
-	print(' [*] Could not load pretrained model weights. Weights can be found in the keras application folder \
-		https://github.com/fchollet/keras/tree/master/keras/applications')
+	print(' [*] Could not load pretrained model weights. Weights can be found in the keras application folder https://github.com/fchollet/keras/tree/master/keras/applications')
 
 optimizer = Adam(lr=1e-5)
 optimizer_classifier = Adam(lr=1e-5)
@@ -390,8 +395,21 @@ for epoch_num in range(num_epochs):
 				print('  - Train classifier accuracy for bounding boxes from RPN: {}'.format(class_acc))
 				print('  - Validation classifier accuracy for bounding boxes from RPN: {}'.format(class_acc_val))
 
+save_name = 'record_loss_acc'
+if C.including_top_weight:
+	save_name += '_withouttop'
+	if not C.rot_90 and not C.use_horizontal_flips and not C.use_vertical_flips:
+		save_name += '_withoutaugmentation.pkl'
+	else:
+		save_name += '_withaugmentation.pkl'
+else:
+	save_name += '_withtop'
+	if not C.rot_90 and not C.use_horizontal_flips and not C.use_vertical_flips:
+		save_name += '_withoutaugmentation.pkl'
+	else:
+		save_name += '_withaugmentation.pkl'
 
-with open('./test_predicted_output/record_loss_acc.pkl', 'wb') as record:
+with open('./test_predicted_output/'+save_name, 'wb') as record:
 	dump(records,record)
 	print(' [*] Have serialized the loss and acc DataFrame type data.')
 print(' [*] Training complete, exiting.')

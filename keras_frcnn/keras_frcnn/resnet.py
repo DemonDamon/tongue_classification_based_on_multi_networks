@@ -31,7 +31,7 @@ def download_imagenet_weight_file(is_include_top):
         # cache_dir: set up the directory of storing downloads
         weights_path = get_file('resnet50_weights_tf_dim_ordering_tf_kernels.h5', TF_WEIGHTS_PATH_WITH_TOP, \
                                 cache_subdir='pretrained_model_weights', \
-                                md5_hash='a268eb855778b3df3c7506639542a6af', \
+                                md5_hash='a7b3fe01876f51b976af0dea6bc144eb', \
                                 cache_dir='./')
         print("Finish download, and save with-top model weight in ./pretrained_model_weights")
     return weights_path
