@@ -177,7 +177,10 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     st = time.time()
     filepath = os.path.join(img_path, img_name)
 
-    img = cv2.imread(filepath)
+    try:
+        img = cv2.imread(filepath)
+    except:
+        continue
 
     X, ratio = format_img(img, C)
 
@@ -255,6 +258,8 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
                 if tmpImg.shape[0] != 0 and tmpImg.shape[1] != 0:
                     b, g, r = cv2.split(tmpImg)
                     tmpImg = cv2.merge([r, g, b])
+                else:
+                    continue
 
                 cv2.rectangle(img, (real_x1, real_y1), (real_x2, real_y2),
                               (int(class_to_color[key][0]), int(class_to_color[key][1]), int(class_to_color[key][2])), 2)
@@ -324,15 +329,6 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
 
                     shezhong = left[int(img_height / 3):img_height - int(img_height / 6), :]
                     cv2.imwrite(shezhong_path, shezhong)
-
-                    # plt.figure(idx+200, figsize=(30, 20))
-                    # plt.subplot(3, 4, 3);plt.imshow(shegen);plt.title('tongue_root')
-                    # plt.subplot(3, 4, 5);plt.imshow(img);plt.title('cropped_tongue')
-                    # plt.subplot(3, 4, 6);plt.imshow(shebian_1);plt.title('tongue_margin_left')
-                    # plt.subplot(3, 4, 7);plt.imshow(shezhong);plt.title('tongue_middle')
-                    # plt.subplot(3, 4, 8);plt.imshow(shebian_2);plt.title('tongue_margin_right')
-                    # plt.subplot(3, 4, 11);plt.imshow(shejian);plt.title('tongue_tip')
-                    # plt.savefig(os.path.join(save_path, img_name.split('.')[0] + '_divided.jpg'))
 
     [r, g, b] = cv2.split(img)
     new_img = cv2.merge([b, g, r])
