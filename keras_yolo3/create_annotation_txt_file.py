@@ -28,6 +28,9 @@ for i in range(data.shape[0]):
     # data['format'][i] = data['format'][i] + ',' + str(train['xmin'][i]) + ',' + str(train['ymin'][i]) \
     #                     + ',' + str(train['xmax'][i]) + ',' + str(train['ymax'][i]) + ',' + train['class'][i]
     data['format'][i] = data['format'][i] + ' ' + str(train['xmin'][i]) + ',' + str(train['ymin'][i]) \
-                        + ',' + str(train['xmax'][i]) + ',' + str(train['ymax'][i]) + ',' + train['classid'][i]
+                        + ',' + str(train['xmax'][i]) + ',' + str(train['ymax'][i]) + ',' + str(train['classid'][i])
 
-data.to_csv(os.path.join(options.txt_output_path,'annotate.txt'), header=None, index=None, sep=' ')
+with open(os.path.join(options.txt_output_path,'annotate.txt'), 'w') as f:
+    for i in data['format']:
+        f.writelines(i+'\n')
+# data.to_csv(os.path.join(options.txt_output_path,'annotate.txt'), header=None, index=None, sep=' ')
