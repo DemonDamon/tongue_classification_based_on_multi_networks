@@ -1,2 +1,0 @@
-.\\test_image\\WX00852.jpg,577,635,1753,2080,tongue
-.\\test_image\\WX00853.jpg,842,628,1818,2114,tongue
