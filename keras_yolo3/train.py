@@ -15,18 +15,11 @@ from optparse import OptionParser
 
 parser = OptionParser()
 
+# python train.py --p ./annotate.txt --ld ./logs/001/ --clsp ./model_data/tongue_classes.txt --ancp ./model_data/yolo_anchors.txt
 parser.add_option("--p", dest="annotation_path")
 parser.add_option("--ld", dest="log_dir", default="./logs/000/")
 parser.add_option("--clsp", dest="classes_path")
 parser.add_option("--ancp", dest="anchors_path", default=32)
-parser.add_option("--horizontal_flips", dest="horizontal_flips", help="Augment with horizontal flips in training. (Default=false).", action="store_true", default=False)
-parser.add_option("--vertical_flips", dest="vertical_flips", help="Augment with vertical flips in training. (Default=false).", action="store_true", default=False)
-parser.add_option("--rot_90", dest="rot_90", help="Augment with 90 degree rotations in training. (Default=false).",action="store_true", default=False)
-parser.add_option("--utilize_transfer_learning", dest="utilize_transfer_learning", help="Augment with using pre-trained model. (Default=false).", action="store_true", default=False)
-parser.add_option("--including_top_weight", dest="including_top_weight", help="Augment with including top weight which between input and second layer network. (Default=false).", action="store_true", default=False)
-parser.add_option("--input_pretrained_weight_path", dest="input_pretrained_weight_path", help="Input path of pre-trained weights.")
-parser.add_option("--output_weight_path", dest="output_weight_path", help="Output path for weights.", default='./model_frcnn.hdf5')
-parser.add_option("--config_filename", dest="config_filename", help="Location to store all the metadata related to the training (to be used when testing).",default="config.pickle")
 
 (options, args) = parser.parse_args()
 
