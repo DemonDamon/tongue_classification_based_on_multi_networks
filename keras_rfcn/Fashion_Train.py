@@ -108,23 +108,73 @@ class FashionDataset(Dataset):
             labels.extend( label_key )
         return np.array(bboxes), np.array(labels)
 
+class TongueDataset(Dataset):
+    # count - int, images in the dataset
+    def initDB(self, count, start = 0):
+        self.start = start
+
+        all_images, classes_count, class_mapping = pickle.load(open("data.pkl", "rb"))
+        self.classes = {}
+        # Add classes
+        for k,c in class_mapping.items():
+            self.add_class("Tongue",c,k)
+            self.classes[c] = k
+
+        for k, item in enumerate(all_images[start:count+start]):
+            self.add_image(source="Tongue",image_id=k, path=item['filepath'], width=item['width'], height=item['height'], bboxes=item['bboxes'])
+
+        self.rootpath = '/content/'
+
+    # read image from file and get the
+    def load_image(self, image_id):
+        info = self.image_info[image_id]
+        # tempImg = image.img_to_array( image.load_img(info['path']) )
+        tempImg = np.array(Image.open(info['path']))
+        return tempImg
+
+    def get_keys(self, d, value):
+        return [k for k,v in d.items() if v == value]
+
+    def load_bbox(self, image_id):
+        info = self.image_info[image_id]
+        bboxes = []
+        labels = []
+        for item in info['bboxes']:
+            bboxes.append((item['y1'], item['x1'], item['y2'], item['x2']))
+            label_key = self.get_keys(self.classes, item['class'])
+            if len(label_key) == 0:
+                continue
+            labels.extend( label_key )
+        return np.array(bboxes), np.array(labels)
+
+
 if __name__ == '__main__':
     ROOT_DIR = os.getcwd()
 
     config = RFCNNConfig()
-    dataset_train = FashionDataset()
-    dataset_train.initDB(100000)
+    dataset_train = TongueDataset()
+    dataset_train.initDB(1800)
     dataset_train.prepare()
 
     # Validation dataset
-    dataset_val = FashionDataset()
-    dataset_val.initDB(5000, start=100000)
+    dataset_val = TongueDataset()
+    dataset_val.initDB(215, start=1800)
     dataset_val.prepare()
+
+    # config = RFCNNConfig()
+    # dataset_train = FashionDataset()
+    # dataset_train.initDB(100000)
+    # dataset_train.prepare()
+    #
+    # # Validation dataset
+    # dataset_val = FashionDataset()
+    # dataset_val.initDB(5000, start=100000)
+    # dataset_val.prepare()
 
     model = RFCN_Model(mode="training", config=config, model_dir=os.path.join(ROOT_DIR, "logs") )
 
     # This is a hack, bacause the pre-train weights are not fit with dilated ResNet
-    model.keras_model.load_weights("resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5", by_name=True, skip_mismatch=True)
+    model.keras_model.load_weights("./resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5", by_name=True, skip_mismatch=True)
 
     try:
         model_path = model.find_last()[1]
