@@ -37,7 +37,6 @@ variances = [1.0, 1.0, 1.0, 1.0] # The list of variances by which the encoded ta
 normalize_coords = True # Whether or not the model is supposed to use coordinates relative to the image size
 
 # 1: Build the Keras model
-
 K.clear_session() # Clear previous models from memory.
 
 model = build_model(image_size=(img_height, img_width, img_channels),
