@@ -42,10 +42,10 @@ def xml_to_pkl():
             class_count_dict[int(data.index(member[0].text))+1] += 1
         value.update({'bboxes':bboxes})
         xml_list.append(value)
-    data = (xml_list,class_count_dict,class_map)
+    data_new = (xml_list,class_count_dict,class_map)
     # column_name = ['filename', 'width', 'height', 'class', 'xmin', 'ymin', 'xmax', 'ymax']
     # xml_df = pd.DataFrame(xml_list, columns=column_name)
-    pickle.dump(data,open('./data.pkl','wb'))
+    pickle.dump(data_new,open('./data.pkl','wb'))
 
 
 xml_to_pkl()
