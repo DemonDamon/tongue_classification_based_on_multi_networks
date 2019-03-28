@@ -19,7 +19,7 @@ parser = OptionParser()
 parser.add_option("--p", dest="annotation_path")
 parser.add_option("--ld", dest="log_dir", default="./logs/000/")
 parser.add_option("--clsp", dest="classes_path")
-parser.add_option("--ancp", dest="anchors_path", default=32)
+parser.add_option("--ancp", dest="anchors_path")
 
 (options, args) = parser.parse_args()
 
@@ -125,6 +125,7 @@ def data_generator_wrapper(annotation_lines, batch_size, input_shape, anchors, n
     if n==0 or batch_size<=0: return None
     return data_generator(annotation_lines, batch_size, input_shape, anchors, num_classes)
 
+
 class_names = get_classes(options.classes_path)
 num_classes = len(class_names)
 anchors = get_anchors(options.anchors_path)
@@ -145,9 +146,9 @@ else:
 
 logging = TensorBoard(log_dir=options.log_dir)
 checkpoint = ModelCheckpoint(options.log_dir + 'ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5',
-    monitor='val_acc', save_weights_only=True, save_best_only=True, period=3, verbose=1)
-reduce_lr = ReduceLROnPlateau(monitor='val_acc', factor=0.1, patience=3, verbose=1)
-early_stopping = EarlyStopping(monitor='val_acc', min_delta=0, patience=10, verbose=1)
+    monitor='val_acc', save_weights_only=True, save_best_only=True, period=1, verbose=1, mode='auto')
+reduce_lr = ReduceLROnPlateau(monitor='val_acc', factor=0.1, patience=3, verbose=1, mode='auto')
+early_stopping = EarlyStopping(monitor='val_acc', min_delta=0, patience=10, verbose=1, mode='auto')
 
 val_split = 0.1
 with open(options.annotation_path) as f:
@@ -161,11 +162,11 @@ num_train = len(lines) - num_val
 # Train with frozen layers first, to get a stable loss.
 # Adjust num epochs to your dataset. This step is enough to obtain a not bad model.
 if True:
-    model.compile(optimizer=Adam(lr=1e-3), loss={
+    model.compile(optimizer=Adam(lr=1e-5), loss={
         # use custom yolo_loss Lambda layer.
         'yolo_loss': lambda y_true, y_pred: y_pred},metrics=['accuracy'])
 
-    batch_size = 8
+    batch_size = 16
     print('Train on {} samples, val on {} samples, with batch size {}.'.format(num_train, num_val, batch_size))
     model.fit_generator(data_generator_wrapper(lines[:num_train], batch_size, input_shape, anchors, num_classes),
             steps_per_epoch=max(1, num_train//batch_size),
@@ -181,10 +182,10 @@ if True:
 if True:
     for i in range(len(model.layers)):
         model.layers[i].trainable = True
-    model.compile(optimizer=Adam(lr=1e-4), loss={'yolo_loss': lambda y_true, y_pred: y_pred},metrics=['accuracy']) # recompile to apply the change
+    model.compile(optimizer=Adam(lr=1e-5), loss={'yolo_loss': lambda y_true, y_pred: y_pred},metrics=['accuracy']) # recompile to apply the change
     print('Unfreeze all of the layers.')
 
-    batch_size = 16 # note that more GPU memory is required after unfreezing the body
+    batch_size = 8 # note that more GPU memory is required after unfreezing the body
     print('Train on {} samples, val on {} samples, with batch size {}.'.format(num_train, num_val, batch_size))
     model.fit_generator(data_generator_wrapper(lines[:num_train], batch_size, input_shape, anchors, num_classes),
         steps_per_epoch=max(1, num_train//batch_size),
