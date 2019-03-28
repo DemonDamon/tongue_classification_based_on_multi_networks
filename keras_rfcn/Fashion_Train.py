@@ -90,7 +90,7 @@ class FashionDataset(Dataset):
     def load_image(self, image_id):
         info = self.image_info[image_id]
         # tempImg = image.img_to_array( image.load_img(info['path']) )
-        tempImg = np.array(Image.open( os.path.join(self.rootpath, info['path']) ))
+        tempImg = np.array(Image.open(os.path.join(self.rootpath, info['path']) ))
         return tempImg
 
     def get_keys(self, d, value):
