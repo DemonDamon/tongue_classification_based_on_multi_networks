@@ -15,10 +15,12 @@ path = options.xml_path
 
 assert path != None
 
-data = []
+data = []; class_map = {}; class_count_dict = {}
 with open('./tongue_classes.txt','r') as f:
-    for row in f:
+    for id, row in enumerate(f):
         data.append(row)
+        class_map.update({str(id+1):id})
+        class_count_dict.update({str(id+1):0})
 
 def xml_to_pkl():
     xml_list = []
@@ -37,11 +39,13 @@ def xml_to_pkl():
                 'x2' : int(member[4][2].text),
                 'y2' : int(member[4][3].text)}
             bboxes.append(box)
+            class_count_dict[int(data.index(member[0].text))+1] += 1
         value.update({'bboxes':bboxes})
         xml_list.append(value)
+    data = (xml_list,class_count_dict,class_map)
     # column_name = ['filename', 'width', 'height', 'class', 'xmin', 'ymin', 'xmax', 'ymax']
     # xml_df = pd.DataFrame(xml_list, columns=column_name)
-    pickle.dump(xml_list,open('./data.pkl','wb'))
+    pickle.dump(data,open('./data.pkl','wb'))
 
 
 xml_to_pkl()
