@@ -39,7 +39,7 @@ def xml_to_pkl():
                 'x2' : int(member[4][2].text),
                 'y2' : int(member[4][3].text)}
             bboxes.append(box)
-            class_count_dict[int(data.index(member[0].text))+1] += 1
+            class_count_dict[str(int(data.index(member[0].text))+1)] += 1
         value.update({'bboxes':bboxes})
         xml_list.append(value)
     data_new = (xml_list,class_count_dict,class_map)
