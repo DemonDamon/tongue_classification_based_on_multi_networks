@@ -290,6 +290,7 @@ class BaseModel(object):
             max_queue_size=100,
             workers=4,
             use_multiprocessing=True,
+            verbose=1
         )
         self.epoch = max(self.epoch, epochs)
 

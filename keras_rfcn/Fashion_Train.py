@@ -28,19 +28,19 @@ class RFCNNConfig(Config):
     to the toy shapes dataset.
     """
     # Give the configuration a recognizable name
-    NAME = "Fashion"
+    NAME = "Tongue"
 
     # Backbone model
     # choose one from ['resnet50', 'resnet101', 'resnet50_dilated', 'resnet101_dilated']
-    BACKBONE = "resnet101"
+    BACKBONE = "resnet50"
 
     # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
     # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
     GPU_COUNT = 1
-    IMAGES_PER_GPU = 1
+    IMAGES_PER_GPU = 32
 
     # Number of classes (including background)
-    C = 1 + 46  # background + 2 tags
+    C = 1 + 1  # background + 2 tags -- 46
     NUM_CLASSES = C
     # Use small images for faster training. Set the limits of the small side
     # the large side, and that determines the image shape.

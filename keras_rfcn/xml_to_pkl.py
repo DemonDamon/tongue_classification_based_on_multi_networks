@@ -34,10 +34,10 @@ def xml_to_pkl():
         bboxes = []
         for member in root.findall('object'):
             box = {'class' : int(data.index(member[0].text))+1,
-                'x1' : int(member[4][0].text),
                 'y1' : int(member[4][1].text),
-                'x2' : int(member[4][2].text),
-                'y2' : int(member[4][3].text)}
+                'x1': int(member[4][0].text),
+                'y2' : int(member[4][3].text),
+                'x2': int(member[4][2].text)}
             bboxes.append(box)
             class_count_dict[str(int(data.index(member[0].text))+1)] += 1
         value.update({'bboxes':bboxes})

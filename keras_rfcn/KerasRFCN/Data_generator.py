@@ -411,6 +411,7 @@ def data_generator(dataset, config, shuffle=True, augment=True, random_rois=0,
                                              config.RPN_ANCHOR_STRIDE)
 
     # Keras requires a generator to run indefinately.
+
     while True:
         try:
             # Increment index to pick next image. Shuffle if at the start of an epoch.
