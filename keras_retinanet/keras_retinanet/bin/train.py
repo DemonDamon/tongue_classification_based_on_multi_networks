@@ -396,7 +396,7 @@ def parse_args(args):
     parser.add_argument('--gpu',              help='Id of the GPU to use (as reported by nvidia-smi).')
     parser.add_argument('--multi-gpu',        help='Number of GPUs to use for parallel processing.', type=int, default=0)
     parser.add_argument('--multi-gpu-force',  help='Extra flag needed to enable (experimental) multi-gpu support.', action='store_true')
-    parser.add_argument('--epochs',           help='Number of epochs to train.', type=int, default=10)
+    parser.add_argument('--epochs',           help='Number of epochs to train.', type=int, default=10) #100
     parser.add_argument('--steps',            help='Number of steps per epoch.', type=int, default=50) #10000
     parser.add_argument('--lr',               help='Learning rate.', type=float, default=1e-5)
     parser.add_argument('--snapshot-path',    help='Path to store snapshots of models during training (defaults to \'./snapshots\')', default='./snapshots')
@@ -424,6 +424,7 @@ def main(args=None):
     if args is None:
         args = sys.argv[1:]
     args = parse_args(args)
+    print(args)
     print(' [*] parsed arguments...')
 
     # create object that stores backbone information
@@ -474,8 +475,8 @@ def main(args=None):
         print(' [*] created model, this may take a second...')
 
     # print model summary
-    print(' [*] print model summary: ')
-    print(model.summary())
+    # print(' [*] print model summary: ')
+    # print(model.summary())
 
     # this lets the generator compute backbone layer shapes using the actual backbone model
     if 'vgg' in args.backbone or 'densenet' in args.backbone:
