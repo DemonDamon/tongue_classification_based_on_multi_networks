@@ -127,7 +127,8 @@ def create_models(backbone_retinanet, num_classes, weights, multi_gpu=0, freeze_
             'regression'    : losses.smooth_l1(),
             'classification': losses.focal()
         },
-        optimizer=keras.optimizers.adam(lr=lr, clipnorm=0.001)
+        optimizer=keras.optimizers.adam(lr=lr, clipnorm=0.001),
+        metrics=['accuracy']
     )
 
     return model, training_model, prediction_model
@@ -184,23 +185,32 @@ def create_callbacks(model, training_model, prediction_model, validation_generat
                 args.snapshot_path,
                 '{backbone}_{dataset_type}_{{epoch:02d}}.h5'.format(backbone=args.backbone, dataset_type=args.dataset_type)
             ),
-            verbose=1,
-            # save_best_only=True,
-            # monitor="mAP",
-            # mode='max'
+            verbose           = 1,
+            save_best_only    = True,
+            save_weights_only = True,
+            monitor           = "val_acc",
+            mode              = 'auto'
         )
         checkpoint = RedirectModel(checkpoint, model)
         callbacks.append(checkpoint)
 
     callbacks.append(keras.callbacks.ReduceLROnPlateau(
-        monitor    = 'loss',
+        monitor    = 'val_loss',
         factor     = 0.1,
-        patience   = 2,
+        patience   = 3,
         verbose    = 1,
         mode       = 'auto',
         min_delta  = 0.0001,
         cooldown   = 0,
         min_lr     = 0
+    ))
+
+    callbacks.append(keras.callbacks.EarlyStopping(
+        monitor    = 'val_loss',
+        min_delta  = 0,
+        patience   = 10,
+        verbose    = 1,
+        mode       = 'auto'
     ))
 
     return callbacks
@@ -383,7 +393,7 @@ def parse_args(args):
     csv_parser = subparsers.add_parser('csv')
     csv_parser.add_argument('annotations', help='Path to CSV file containing annotations for training.')
     csv_parser.add_argument('classes', help='Path to a CSV file containing class label mapping.')
-    csv_parser.add_argument('--val-annotations', help='Path to CSV file containing annotations for validation (optional).')
+    csv_parser.add_argument('val_annotations', help='Path to CSV file containing annotations for validation (optional).')
 
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--snapshot',          help='Resume training from a snapshot.')
@@ -397,7 +407,7 @@ def parse_args(args):
     parser.add_argument('--multi-gpu',        help='Number of GPUs to use for parallel processing.', type=int, default=0)
     parser.add_argument('--multi-gpu-force',  help='Extra flag needed to enable (experimental) multi-gpu support.', action='store_true')
     parser.add_argument('--epochs',           help='Number of epochs to train.', type=int, default=10) #100
-    parser.add_argument('--steps',            help='Number of steps per epoch.', type=int, default=50) #10000
+    parser.add_argument('--steps',            help='Number of steps per epoch.', type=int, default=100) #10000
     parser.add_argument('--lr',               help='Learning rate.', type=float, default=1e-5)
     parser.add_argument('--snapshot-path',    help='Path to store snapshots of models during training (defaults to \'./snapshots\')', default='./snapshots')
     parser.add_argument('--tensorboard-dir',  help='Log directory for Tensorboard output', default='./logs')
@@ -405,8 +415,8 @@ def parse_args(args):
     parser.add_argument('--no-evaluation',    help='Disable per epoch evaluation.', dest='evaluation', action='store_false')
     parser.add_argument('--freeze-backbone',  help='Freeze training of backbone layers.', action='store_true')
     parser.add_argument('--random-transform', help='Randomly transform image and annotations.', action='store_true')
-    parser.add_argument('--image-min-side',   help='Rescale the image so the smallest side is min_side.', type=int, default=800)
-    parser.add_argument('--image-max-side',   help='Rescale the image if the largest side is larger than max_side.', type=int, default=1333)
+    parser.add_argument('--image-min-side',   help='Rescale the image so the smallest side is min_side.', type=int, default=600) #800
+    parser.add_argument('--image-max-side',   help='Rescale the image if the largest side is larger than max_side.', type=int, default=800) #1333
     parser.add_argument('--config',           help='Path to a configuration parameters .ini file.')
     parser.add_argument('--weighted-average', help='Compute the mAP using the weighted average of precisions among classes.', action='store_true')
 
@@ -424,8 +434,9 @@ def main(args=None):
     if args is None:
         args = sys.argv[1:]
     args = parse_args(args)
-    print(args)
-    print(' [*] parsed arguments...')
+    print(' [*] Print out all attributes of Config:')
+    for i in vars(args):
+        print('    ', i, ':', vars(args)[i])
 
     # create object that stores backbone information
     backbone = models.backbone(args.backbone)
