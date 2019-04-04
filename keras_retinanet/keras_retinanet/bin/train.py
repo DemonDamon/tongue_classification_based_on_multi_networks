@@ -188,14 +188,15 @@ def create_callbacks(model, training_model, prediction_model, validation_generat
             verbose           = 1,
             save_best_only    = True,
             save_weights_only = True,
-            monitor           = "val_acc",
+            monitor           = "mAP", #val_acc
+            period            = 1,
             mode              = 'auto'
         )
         checkpoint = RedirectModel(checkpoint, model)
         callbacks.append(checkpoint)
 
     callbacks.append(keras.callbacks.ReduceLROnPlateau(
-        monitor    = 'val_loss',
+        monitor    = 'loss', #val_loss
         factor     = 0.1,
         patience   = 3,
         verbose    = 1,
@@ -206,7 +207,7 @@ def create_callbacks(model, training_model, prediction_model, validation_generat
     ))
 
     callbacks.append(keras.callbacks.EarlyStopping(
-        monitor    = 'val_loss',
+        monitor    = 'loss', #val_loss
         min_delta  = 0,
         patience   = 10,
         verbose    = 1,
