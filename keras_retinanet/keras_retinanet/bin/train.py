@@ -213,7 +213,6 @@ def create_callbacks(model, training_model, prediction_model, validation_generat
         verbose    = 1,
         mode       = 'auto'
     ))
-
     return callbacks
 
 
@@ -407,8 +406,8 @@ def parse_args(args):
     parser.add_argument('--gpu',              help='Id of the GPU to use (as reported by nvidia-smi).')
     parser.add_argument('--multi-gpu',        help='Number of GPUs to use for parallel processing.', type=int, default=0)
     parser.add_argument('--multi-gpu-force',  help='Extra flag needed to enable (experimental) multi-gpu support.', action='store_true')
-    parser.add_argument('--epochs',           help='Number of epochs to train.', type=int, default=10) #100
-    parser.add_argument('--steps',            help='Number of steps per epoch.', type=int, default=100) #10000
+    parser.add_argument('--epochs',           help='Number of epochs to train.', type=int, default=10) #10
+    parser.add_argument('--steps',            help='Number of steps per epoch.', type=int, default=100) #100
     parser.add_argument('--lr',               help='Learning rate.', type=float, default=1e-5)
     parser.add_argument('--snapshot-path',    help='Path to store snapshots of models during training (defaults to \'./snapshots\')', default='./snapshots')
     parser.add_argument('--tensorboard-dir',  help='Log directory for Tensorboard output', default='./logs')
