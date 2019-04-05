@@ -157,8 +157,8 @@ def create_callbacks(model, training_model, prediction_model, validation_generat
             histogram_freq         = 0,
             batch_size             = args.batch_size,
             write_graph            = True,
-            write_grads            = False,
-            write_images           = False,
+            write_grads            = True,
+            write_images           = True,
             embeddings_freq        = 0,
             embeddings_layer_names = None,
             embeddings_metadata    = None
@@ -187,10 +187,10 @@ def create_callbacks(model, training_model, prediction_model, validation_generat
             ),
             verbose           = 1,
             save_best_only    = True,
-            save_weights_only = True,
-            monitor           = "mAP", #val_acc
-            period            = 1,
-            mode              = 'auto'
+            # save_weights_only = True,
+            # monitor           = "mAP", #val_acc
+            # period            = 1,
+            # mode              = 'auto'
         )
         checkpoint = RedirectModel(checkpoint, model)
         callbacks.append(checkpoint)
