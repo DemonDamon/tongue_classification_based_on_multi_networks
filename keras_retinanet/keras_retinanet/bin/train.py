@@ -188,9 +188,9 @@ def create_callbacks(model, training_model, prediction_model, validation_generat
             verbose           = 1,
             save_best_only    = True,
             # save_weights_only = True,
-            # monitor           = "mAP", #val_acc
-            # period            = 1,
-            # mode              = 'auto'
+            monitor           = "loss", #val_acc/val_loss不行
+            period            = 1,
+            mode              = 'auto'
         )
         checkpoint = RedirectModel(checkpoint, model)
         callbacks.append(checkpoint)
